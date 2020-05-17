@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "child_process": "^1.0.2",
     "phantomjs": "^2.1.7",
     "webserver": "^3.1.16"
   }

@@ -1,5 +1,6 @@
 var http = require('http');
 var port = 8080;
+const { exec, spawn } = require('child_process');
 
 //create a server object:
 http.createServer(function (request, response) {
@@ -30,21 +31,24 @@ http.createServer(function (request, response) {
 
   //Routing
   switch(action){
-    case '/':
-      responseJson(true, "Showing home in response", 200);
+    case '/new-deploy':
+
+      const bat = spawn('bash stop-start.sh', [], { shell: true });
+
+      bat.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+      });
+
+      bat.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+      });
+
+      bat.on('close', (code) => {
+        console.log(code);
+      });
+
+      // responseJson(true, "Showing home in response", 200);
       console.log("Showing home in console");
-      break;
-    case '/-POST':
-      responseJson(true, "Showing home posting in response", 200);
-      console.log("Showing home posting in console");
-      break;
-    case '/test-1':
-      responseJson(true, "Showing Testing URL 1 in response", 200);
-      console.log("Showing Testing URL 1 in console");
-      break;
-    case '/test-2':
-      responseJson(true, "Showing Testing URL 2 in response", 200);
-      console.log("Showing Testing URL 2 in console");
       break;
     default:
     responseJson(false, "The action is wrong or not implemented", 400);
